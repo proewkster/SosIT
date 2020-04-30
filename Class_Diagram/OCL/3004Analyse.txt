@@ -1,0 +1,9 @@
+context message::Read():
+pre: self.public = true
+post: result = writtenBy.firstName + writtenBy.lastName + self.description
+
+
+context User::sendMessage():
+Pre:
+if user is Klantcontact
+then messages.public = True
