@@ -1,9 +1,18 @@
-context message::Read():
-pre: self.public = true
-post: result = writtenBy.firstName + writtenBy.lastName + self.description
+context Message inv:
+if self.public = false and reader.oclisTypeOf(Client_contact)
+then self.readMessage() = ""
+else self.readMessage()= self.desription
+endif
+
+context Message::readMessage():string:
+body: result = self.Read()@pre + writtenBy.firstname + writtenBy.lastname
+
+context Message inv:
+self.timestampCreated < self.timestampCompleted
 
 
-context User::sendMessage():
-Pre:
-if user is Klantcontact
-then messages.public = True
+context User:sendMessage(description:string,public:bool):
+post: message.NotifyUsers(writtenby) and Message.Notify(relatedticket. 
+
+context Message:NotifyUsers()
+--als er een message gezonden wordt dan zullen de mensen die aan het ticket werken verwittigd worden
