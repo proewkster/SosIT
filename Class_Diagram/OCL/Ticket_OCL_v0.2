@@ -1,0 +1,50 @@
+Context Ticket inv:
+self.timestampResolved > self.timestampCreated
+-- Resolved date must be later than created date
+
+Context Ticket inv:
+if self.impact = enumImpact.High and self.Urgency = enumUrgency.High
+	then self.Priority = enumPriority.Critical
+if (self.impact = enumImpact.High and self.Urgency = enumUrgency.Medium) or (self.impact = enumImpact.Medium and self.Urgency = enumUrgency.High)
+	then self.Priority = enumPriority.High
+if (self.impact = enumImpact.High and self.Urgency = enumUrgency.Low) or (self.impact = enumImpact.Medium and self.Urgency = enumUrgency.Medium) or (self.impact = enumImpact.Low and self.Urgency = enumUrgency.High)
+	then self.Priority = enumPriority.Medium
+if (self.impact = enumImpact.Medium and self.Urgency = enumUrgency.Low) or (self.impact = enumImpact.Low and self.Urgency = enumUrgency.Medium)
+	then self.Priority = enumPriority.Low
+if self.impact = enumImpact.Low and self.Urgency = enumUrgency.Low
+	then self.Priority = enumPriority.Planning
+-- Implementation of the "Priority" Matrix from the document
+
+Context Ticket::status:enumStatus
+init:self.status = enumStatus.Open
+-- Every ticket starts in the "Open" state
+
+Contect Ticket inv:
+if self.priority = enumPriority.Critical then
+	self.timestampProjectedViolation = self.timestampCreated + self.createdBy.client.SLA.timeframeCritical
+else if self.priority = enumPriority.High then
+	self.timestampProjectedViolation = self.timestampCreated + self.createdBy.client.SLA.timeframeHigh
+else if self.priority = enumPriority.Medium then
+	self.timestampProjectedViolation = self.timestampCreated + self.createdBy.client.SLA.timeframeMedium
+else if self.priority = enumPriority.Low then
+	self.timestampProjectedViolation = self.timestampCreated + self.createdBy.client.SLA.timeframeLow
+else if self.priority = enumPriority.Planning then
+	self.timestampProjectedViolation = self.timestampCreated + self.createdBy.client.SLA.timeframePlanning
+-- Calculate Projected Violation date based on creation date and the related client SLA. The timeframes are based on the ticket's priority.
+
+Context Ticket inv:
+let totalTime: double = Ticket.messages->sum(m | m.timeTaken)
+self.timeSpent = totalTime
+-- The time spent on a ticket is the sum of the time taken for each message attached to the ticket
+
+Context Ticket inv:
+self.Children->Count() > 0 implies self.Children->forAll(c | c.parent = self)
+-- If a ticket has child tickets, the parent of these child tickets must be the ticket itself
+
+Context Ticket inv:
+self.status = enumStatus.Resolved or enumStatus.Rejected or enumStatus.Failed implies 
+self.children->forAll(c | c.status = emumStatus.Resolved or enumStatus.Rejected or enumStatus.Failed)
+-- If a ticket is a parent ticket (and thus has children attached to it), it can only be closed if all child-tickets are closed as well
+
+Context Ticket::readTicket()
+--Pseudo: can only be performed by Handlers or Client_Contacts belonging to the Client that created the ticket
