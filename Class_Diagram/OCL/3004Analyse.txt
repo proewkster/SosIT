@@ -12,7 +12,7 @@ self.timestampCreated < self.timestampCompleted
 
 
 context User:sendMessage(description:string,public:bool):
-post: message.NotifyUsers(writtenby) and Message.Notify(relatedticket. 
+post: message.NotifyUsers(message.writtenby) and Message.NotifyUsers(message.relatedticket.createdBy)
 
 context Message:NotifyUsers()
 --als er een message gezonden wordt dan zullen de mensen die aan het ticket werken verwittigd worden
