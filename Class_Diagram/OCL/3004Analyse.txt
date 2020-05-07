@@ -10,6 +10,8 @@ body: result = self.Read()@pre + writtenBy.firstname + writtenBy.lastname
 context Message inv:
 self.timestampCreated < self.timestampCompleted
 
+context Message inv:
+self.timeTaken = self.timestampCompleted - self.timestampCreated
 
 context User:sendMessage(description:string,public:bool):
 post: message.NotifyUsers(message.writtenby) and Message.NotifyUsers(message.relatedticket.createdBy)
