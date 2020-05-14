@@ -46,9 +46,6 @@ self.status = enumStatus.Resolved or enumStatus.Rejected or enumStatus.Failed im
 self.children->forAll(c | c.status = emumStatus.Resolved or enumStatus.Rejected or enumStatus.Failed)
 -- If a ticket is a parent ticket (and thus has children attached to it), it can only be closed if all child-tickets are closed as well
 
-Context Ticket::readTicket()
---Pseudo: can only be performed by Handlers or Client_Contacts belonging to the Client that created the ticket
-
 Context Asset inv: 
 self.warranty <> null implies purchaseDate <> null
 -- if an asset has a warranty, a purchase date is mandatory
