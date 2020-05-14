@@ -58,7 +58,7 @@ self.location <> null
 -- if an asset is hardware, a location is mandatory
 
 context Message inv:
-self.public = false implies readers->forAll (r | r.oclIsTypeOf(Handler)
+self.public = false implies readers->forAll (r | r.oclIsTypeOf(Handler))
 -- Only handlers can read private messages
 
 context Message::readMessage():string:
