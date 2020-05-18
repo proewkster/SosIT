@@ -1,0 +1,49 @@
+Authenticatiesystemen
+
+Zonder bestaande systemen, in database username en paswoord opslaan (hashed + salted). 
+
+Kerberos 
+RADIUS (centraal authenticatiesysteem), elke keer opnieuw aanmelden
+OAuth2 (single sign on facebook, google)
+
+mogelijke gevaren, 
+Als token onderschept wordt, kan iemand anders de user impersoneren en aanloggen onder zijn naam. 
+Als het authenticatiesysteem niet bereikbaar is, kan je niet aanmelden.
+
+Bijlage toevoegen aan ticket en bericht
+Bijlage op File Server zetten, niet in database, enkel de link in de database.
+Bestanden zijn groter dus is het beter deze op een fileserver te zetten in verband met de performantie van de database.
+Extra voordelen fileserver, backup, clustering, user control. 
+In het ERD zou er dan een extra tabel komen en in ticket of bericht een extra veld met een foreign key naar deze tabel. 
+In de tabel zelf staat dan de link/referentie naar de fileserver. 
+
+Standaard antwoorden
+Bijvoorbeeld Flashpaste, dit programma maakt templates aan die je dan snel kan kopiëren, hierdoor ga je niet elke keer hetzelfde moeten
+typen en vermijd je fouten. Als dit handig is, omdat een vraag bijvoorbeeld vaak terugkeert, kan er ook nagedacht worden om dit in een 
+faq te zetten, zodat users hiervoor niet perse een ticket moeten aanmaken, maar zelf het antwoord kunnen terugvinden (known errors).
+
+Teams met wachtrijen
+Teams zou een extra tabel worden in het class diagram en het ERD, in teams zitten Handlers, tickets kunnen dan in plaats van aan een
+handler toegewezen worden, ook aan een team toegewezen worden. 
+
+E-mail
+Mailserver nodig, dit hoeft niet zelf gehost te worden. 
+Als het systeem zelfs mail wil versturen kan dit via SMPT. 
+Als je e-mails wilt ontvangen moet je via POP3 of IMAP deze ophalen van een mailserver. Je kan dan via een template de nuttige velden uit
+de e-mail halen (bijvoorbeeld, sender, body, attachements etc.)
+Er kan eventueel ook gewerkt worden met een invulformulier, hierdoor gaat de klant alle nodige velden correct invullen, als hij dan op
+zenden drukt, kan dit via e-mail verstuurd worden en kan het systeem de nuttige info aan de juiste velden koppelen.
+
+Fat client: code draait op computer van de gebruiker en communiceert via netwerk met de database, hierdoor moet het programma bij elke 
+gebruiker geïnstalleerd worden, up to date gehouden worden etc. De performantie hangt niet af van de eventuele snelheid van de internetverbinding
+Web Application: code draait server side, niet op de computer van de gebruiker zelf, communicatie via netwerk. Er moet geen software geïnstalleerd
+worden bij de klant, Nadeel, als er geen netwerkverbinding is kan er niet meer gewerkt worden in het systeem.
+Onze keuze zou vallen op een web application voor het gehele systeem. 
+We kunnen er ook voor kiezen om een app te maken voor het messages syteem, de rest 
+
+Cloud:
+Als we in de cloud werken wordt er heel veel werk uit onze handen genomen. Onderhoud en backups moeten we dan niet meer zelf opvolgen. 
+De beschikbaarheid zou ook beter moeten zijn en er worden geen resources verspild. 
+
+
+
